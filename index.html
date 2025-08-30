@@ -214,6 +214,7 @@
         <pre><code>{
   "landing_url": "/login"
 }</code></pre>
+
         <p>Initial path users are sent to when they reach the proxy.</p>
         <table>
           <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
@@ -221,6 +222,19 @@
             <tr><td><code>landing_url</code></td><td>string (path)</td><td>Default path shown on first visit to the proxy.</td></tr>
           </tbody>
         </table>
+
+          <h2 id="landing-host">landing_host <a class="anchor" href="#landing-host">#</a></h2>
+          <pre><code>{
+    "landing_host": "example.com"
+  }</code></pre>
+
+          <p>Initial host users are sent to when they reach the proxy.</p>
+          <table>
+            <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+            <tbody>
+              <tr><td><code>landing_host</code></td><td>string (host)</td><td>Default host shown on first visit to the proxy.</td></tr>
+            </tbody>
+          </table>
 
         <h2 id="example">Minimal example <a class="anchor" href="#example">#</a></h2>
         <pre><code>{
