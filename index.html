@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phishlet Reference · EvilPunch</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+    <meta name="description" content="Phishlet schema reference and examples for EvilPunch." />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:site_name" content="EvilPunch" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Phishlet Reference" />
+    <meta property="og:description" content="Phishlet schema reference and examples for EvilPunch." />
+    <meta property="og:image" content="https://evilpunch.com/assets/banner-bot-mitigation.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Phishlet Reference" />
+    <meta name="twitter:description" content="Phishlet schema reference and examples for EvilPunch." />
+    <meta name="twitter:image" content="https://evilpunch.com/assets/banner-bot-mitigation.webp" />
+    <link rel="canonical" href="https://evilpunch.com/docs/" />
+    <script type="application/ld+json">{
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Phishlet Reference",
+      "description": "Phishlet schema reference and examples for EvilPunch.",
+      "author": {"@type": "Organization", "name": "EvilPunch"},
+      "publisher": {"@type": "Organization", "name": "EvilPunch"}
+    }</script>
+  </head>
+  <body class="docs">
+    <header>
+      <div class="container nav" style="position:relative">
+        <div style="display:flex;align-items:center;gap:10px">
+          <a href="../index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:10px"><img src="https://evilpunch.com/evilpunch.png" alt="EvilPunch" width="28" height="28" /><strong>EvilPunch</strong></a>
+        </div>
+        <nav>
+          <a href="../index.html"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"></path></svg>Home</a>
+          <a href="index.html"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm8 1v3h3"></path></svg>Docs</a>
+          <a href="../blog/index.html"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z"></path></svg>Blog</a>
+        </nav>
+      </div>
+    </header>
+    <div class="nav-spacer"></div>
+    <main class="container layout" style="contain: content;">
+      <aside class="sidebar" >
+        <div class="section-title">On this page</div>
+        <input class="search" id="search" placeholder="Search docs..." />
+        <ul class="toc" id="toc"></ul>
+      </aside>
+      <div class="content-wrap">
+      <section class="content">
+        <p class="kicker">Reference · v1 schema (JSON)</p>
+        <h1 class="title">Phishlet Reference</h1>
+        <div class="note">This mirrors <code>doc_and_guide/docs/phishlet_sample.json</code>. Field names intentionally match the sample (e.g., <code>orignal_subdomain</code>).</div>
+
+        <h2 id="header">Header <a class="anchor" href="#header">#</a></h2>
+        <p><span class="badge">min_version</span><span class="badge">redirect_url</span></p>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>min_version</code></td><td>string</td><td>Minimum EvilPunch version compatible with this phishlet.</td></tr>
+            <tr><td><code>redirect_url</code></td><td>string</td><td>Default redirect when capture completes.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="top-level">Top‑level <a class="anchor" href="#top-level">#</a></h2>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>name</code></td><td>string</td><td>Unique identifier for the phishlet.</td></tr>
+            <tr><td><code>author</code></td><td>string</td><td>Author or maintainer.</td></tr>
+            <tr><td><code>target_url</code></td><td>string (URL)</td><td>Canonical URL of the real site entry point.</td></tr>
+            <tr><td><code>proxy_domain</code></td><td>string (domain)</td><td>Apex domain used by the proxy.</td></tr>
+            <tr><td><code>proxy_auth</code></td><td>string (path)</td><td>Unguessable path for proxy auth flows; must start with <code>/</code>.</td></tr>
+          </tbody>
+        </table>
+
+
+        <h2 id="hosts">hosts_to_proxy <a class="anchor" href="#hosts">#</a></h2>
+        <p>Define which hosts are mirrored and how they map onto <code>proxy_domain</code>.</p>
+        <pre><code>{
+  "host": "www.example.com",
+  "orignal_subdomain": "www",
+  "proxy_subdomain": "www",
+  "reverce_filter": true,
+  "auto_filter": true
+}</code></pre>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>host</code></td><td>string</td><td>Exact target host to mirror.</td></tr>
+            <tr><td><code>orignal_subdomain</code></td><td>string</td><td>Original subdomain (<code>""</code> for apex).</td></tr>
+            <tr><td><code>proxy_subdomain</code></td><td>string</td><td>Exposed subdomain on <code>proxy_domain</code>.</td></tr>
+            <tr><td><code>reverce_filter</code></td><td>bool</td><td>Enable request body host rewriting.</td></tr>
+            <tr><td><code>auto_filter</code></td><td>bool</td><td>Apply automatic URL/content rewrites.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="filters">filters <a class="anchor" href="#filters">#</a></h2>
+        <p>Fine‑grained URL/content rewrites.</p>
+        <pre><code>{
+  "type": "url",
+  "url": "/login",
+  "method": "GET",
+  "locate": "example.com",
+  "replace": "attacker.tld"
+}</code></pre>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>type</code></td><td>string</td><td>Currently <code>url</code>.</td></tr>
+            <tr><td><code>url</code></td><td>string</td><td>Path pattern (supports <code>*</code>).</td></tr>
+            <tr><td><code>method</code></td><td>string</td><td>HTTP method to match.</td></tr>
+            <tr><td><code>locate</code></td><td>string</td><td>Text/host to search for.</td></tr>
+            <tr><td><code>replace</code></td><td>string</td><td>Replacement text.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="auth-urls">auth_urls <a class="anchor" href="#auth-urls">#</a></h2>
+        <pre><code>{
+  "auth_urls": [
+    "/session",
+    "/register"
+  ]
+}</code></pre>
+        <p>Paths that indicate authentication success or actions (e.g., <code>/session</code>, <code>/register</code>).</p>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>auth_urls</code></td><td>array&lt;string&gt;</td><td>List of path prefixes that mark authenticated flows.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="credentials">credentials <a class="anchor" href="#credentials">#</a></h2>
+        <p>Rules to extract credentials from POST bodies or JSON payloads.</p>
+        <pre><code>{
+  "credentials": [
+    {
+      "type": "json",
+      "name": "username",
+      "keyword": "login",
+      "regexp": true,
+      "regexp_string": "login"
+    },
+    {
+      "type": "json",
+      "name": "username",
+      "keyword": "login",
+      "regexp": true,
+      "regexp_string": "login\":\\s*\"([^\\\"]*)\""
+    },
+    {
+      "type": "post",
+      "name": "password",
+      "keyword": "password",
+      "regexp": false
+    }
+  ]
+}</code></pre>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>type</code></td><td>enum</td><td><code>post</code> (form) or <code>json</code> (JSON body).</td></tr>
+            <tr><td><code>name</code></td><td>string</td><td>Logical field name.</td></tr>
+            <tr><td><code>keyword</code></td><td>string</td><td>Key or marker to search for.</td></tr>
+            <tr><td><code>regexp</code></td><td>bool</td><td>Enable regex extraction.</td></tr>
+            <tr><td><code>regexp_string</code></td><td>string</td><td>Regex to apply when <code>regexp=true</code>.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="cookies">cookies <a class="anchor" href="#cookies">#</a></h2>
+        <pre><code>{
+
+  "cookies": [
+  "sessionid",
+  "csrftoken",
+  "*"
+]
+        }</code></pre>
+        <p>Cookie names to capture; supports <code>*</code> wildcard.</p>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>cookies</code></td><td>array&lt;string&gt;</td><td>Cookie names to capture. Use <code>*</code> to capture all cookies.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="inject-js">inject_js <a class="anchor" href="#inject-js">#</a></h2>
+        <pre><code>{
+  "inject_js": [
+    {
+      "host": "fluxxset.com",
+      "url": "/login",
+      "js_code": "console.log('Hello, world!');"
+    },
+    {
+      "host": "www.fluxxset.com",
+      "url": "/login",
+      "js_code": "console.log('Hello, world!');"
+    }
+  ]
+}</code></pre>
+        <p>JavaScript snippets to inject for a given <code>host</code> and <code>url</code> path.</p>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>host</code></td><td>string</td><td>Target host where the script should be injected.</td></tr>
+            <tr><td><code>url</code></td><td>string</td><td>Path prefix to match for injection.</td></tr>
+            <tr><td><code>js_code</code></td><td>string (JS)</td><td>Raw JavaScript to inject.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="landing-url">landing_url <a class="anchor" href="#landing-url">#</a></h2>
+        <pre><code>{
+  "landing_url": "/login"
+}</code></pre>
+        <p>Initial path users are sent to when they reach the proxy.</p>
+        <table>
+          <thead><tr><th>name</th><th>type</th><th>description</th></tr></thead>
+          <tbody>
+            <tr><td><code>landing_url</code></td><td>string (path)</td><td>Default path shown on first visit to the proxy.</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="example">Minimal example <a class="anchor" href="#example">#</a></h2>
+        <pre><code>{
+  "name": "example.com",
+  "author": "you",
+  "min_version": "1.0.0",
+  "target_url": "https://example.com/login",
+  "redirect_url": "https://example.com",
+  "proxy_domain": "evil.tld",
+  "hosts_to_proxy": [
+    { "host": "example.com", "orignal_subdomain": "", "proxy_subdomain": "", "reverce_filter": true, "auto_filter": true },
+    { "host": "www.example.com", "orignal_subdomain": "www", "proxy_subdomain": "www", "reverce_filter": true, "auto_filter": true }
+  ],
+  "filters": [],
+  "auth_urls": ["/session"],
+  "credentials": [ { "type": "post", "name": "password", "keyword": "password", "regexp": "false" } ],
+  "cookies": ["*"],
+  "inject_js": [],
+  "landing_url": "/login"
+}</code></pre>
+
+        <div class="note warn">Use dedicated test infrastructure. Ensure you have authorization before proxying any targets.</div>
+
+        <h2 id="full-sample">Full sample <a class="anchor" href="#full-sample">#</a></h2>
+        <p class="meta">From <code>doc_and_guide/docs/phishlet_sample.json</code>:</p>
+        <pre><code>
+        
+ 
+{
+  "name": "fluxxset.com",
+  "author": "@fluxxset",
+  "min_version": "1.0.0",
+  "target_url": "https://fluxxset.com/",
+  "redirect_url": "https://fluxxset.com/",
+  "proxy_domain": "yourdomain.com",
+  "proxy_auth": "/xxx/ekfbsejhbesjhfgive",
+  "hosts_to_proxy": [
+    {
+      "host": "fluxxset.com",
+      "orignal_subdomain": "",
+      "proxy_subdomain": "",
+      "reverce_filter": true,
+      "auto_filter": true
+    },
+    {
+      "host": "www.fluxxset.com",
+      "orignal_subdomain": "www",
+      "proxy_subdomain": "www",
+      "reverce_filter": true,
+      "auto_filter": true
+    },
+    {
+      "host": "fourthwall.fluxxset.com",
+      "orignal_subdomain": "fourthwall",
+      "proxy_subdomain": "fourthwall",
+      "reverce_filter": true,
+      "auto_filter": true
+    },
+    {
+      "host": "hire.fluxxset.com",
+      "orignal_subdomain": "hire",
+      "proxy_subdomain": "hire",
+      "reverce_filter": true,
+      "auto_filter": true
+    },
+    {
+      "host": "shop.fluxxset.com",
+      "orignal_subdomain": "shop",
+      "proxy_subdomain": "shop",
+      "reverce_filter": true,
+      "auto_filter": true
+    },
+    {
+      "host": "tools.fluxxset.com",
+      "orignal_subdomain": "tools",
+      "proxy_subdomain": "tools",
+      "reverce_filter": true,
+      "auto_filter": true
+    },
+    {
+      "host": "www.fourthwall.fluxxset.com",
+      "orignal_subdomain": "www.fourthwall",
+      "proxy_subdomain": "wxxxxwall",
+      "reverce_filter": true,
+      "auto_filter": true
+    }
+  ],
+  "filters": [
+    {
+      "type": "url",
+      "url": "*",
+      "method": "GET",
+      "locate": "Fluxxset",
+      "replace": "Changed"
+    },
+    {
+      "type": "url",
+      "url": "*",
+      "method": "GET",
+      "locate": "fluxxset.com",
+      "replace": "yourdomain.com"
+    }
+  ],
+  "auth_urls": [
+    "/login",
+    "/session"
+  ],
+  "credentials": [
+    {
+      "type": "post",
+      "name": "username",
+      "keyword": "login",
+      "regexp": "false"
+    },
+    {
+      "type": "post",
+      "name": "password",
+      "keyword": "password",
+      "regexp": "false"
+    }
+  ],
+  "cookies": [
+    "*"
+  ],
+  "inject_js": [
+    {
+      "host": "fluxxset.com",
+      "url": "/",
+      "js_code": "console.log('Hello, world!');"
+    }
+  ],
+  "landing_url": "/login"
+}
+
+
+ 
+</code></pre>
+      </section>
+    <div class="footer-spacer"></div>
+
+      </div>
+
+    </main>
+    <footer class="footer mt-auto py-3">
+      <div class="container text-center">
+        <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-2">
+          <img src="https://evilpunch.com/evilpunch.png" alt="EvilPunch Logo" class="img-fluid" style="max-width: 50px;">
+          <span class="text-muted">Made with <span class="heart">❤️</span> by <a href="https://x.com/FluxxSet" class="text-decoration-none">Fluxxset</a></span>
+          <span class="text-muted">·</span>
+          <a href="https://evilpunch.com/warning" class="text-decoration-none">Legal & Ethical Use</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const toc = document.getElementById('toc');
+      const search = document.getElementById('search');
+      const headings = Array.from(document.querySelectorAll('.content h2'));
+      headings.forEach(h => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.textContent = h.textContent;
+        a.href = `#${h.id}`;
+        li.appendChild(a);
+        toc.appendChild(li);
+      });
+      const opts = { rootMargin: `0px 0px -70% 0px`, threshold: [0, 1.0] };
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const id = entry.target.getAttribute('id');
+          const link = toc.querySelector(`a[href="#${id}"]`);
+          if (!link) return;
+          if (entry.isIntersecting) {
+            toc.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+          }
+        });
+      }, opts);
+      headings.forEach(h => observer.observe(h));
+      // Smooth scroll + prevent layout jump
+      toc.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (!a) return;
+        const target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        window.history.pushState({}, '', a.getAttribute('href'));
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      // Simple section filter
+      if (search) {
+        search.addEventListener('input', () => {
+          const q = search.value.toLowerCase();
+          document.querySelectorAll('.content h2').forEach(h => {
+            const sec = h.nextElementSibling && h.nextElementSibling.tagName.toLowerCase() !== 'h2'
+              ? h.parentElement
+              : h.parentElement;
+          });
+          document.querySelectorAll('.content > *').forEach(el => el.style.display = '');
+          if (!q) return;
+          document.querySelectorAll('.content h2').forEach(h => {
+            const id = h.id;
+            const sectionNodes = [];
+            let n = h.nextElementSibling;
+            while (n && !(n.tagName && n.tagName.toLowerCase() === 'h2')) {
+              sectionNodes.push(n);
+              n = n.nextElementSibling;
+            }
+            const text = [h.textContent, ...sectionNodes.map(x => x.textContent)].join(' ').toLowerCase();
+            const match = text.includes(q);
+            h.style.display = match ? '' : 'none';
+            sectionNodes.forEach(n => n.style.display = match ? '' : 'none');
+          });
+        });
+      }
+      // Back to top visibility
+      const toTop = document.getElementById('toTop');
+      if (toTop) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 400) toTop.classList.add('show'); else toTop.classList.remove('show');
+        });
+        toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      }
+      // Copy buttons for code blocks
+      document.querySelectorAll('pre').forEach(pre => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', () => {
+          const text = pre.textContent;
+          navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = 'Copied!';
+            setTimeout(() => (btn.textContent = 'Copy'), 1200);
+          });
+        });
+        pre.appendChild(btn);
+      });
+    </script>
+    <button id="toTop" class="to-top" title="Back to top">↑</button>
+  </body>
+</html>
+
